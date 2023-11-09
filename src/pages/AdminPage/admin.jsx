@@ -66,7 +66,11 @@ const Admin = () => {
         />
         {selectedItem === "movies" && (
           <Suspense fallback={<div>Loading.....</div>}>
-            <MovieTable movieList={movieList} userType={ADMIN} />
+            <MovieTable
+              movieList={movieList}
+              userType={ADMIN}
+              setMovieList={setMovieList}
+            />
           </Suspense>
         )}
         {selectedItem === "theaters" && (

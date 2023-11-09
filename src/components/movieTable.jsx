@@ -4,14 +4,22 @@ import { useState } from "react";
 import { ADMIN } from "../constants";
 import MovieModal from "./movieModal";
 
-const MovieTable = ({ movieList, userType }) => {
+import { removeMovie } from "../api/movie";
+import { toast } from "react-toastify";
+
+const MovieTable = ({ movieList, userType, setMovieList }) => {
   const [movieDetail, setMovieDetail] = useState({});
   const [showAddMovieModal, setShowAddMovieModal] = useState(false);
   const [showEditMovieModal, setShowEditMovieModal] = useState(false);
 
-  const addMovie = (theatre) => {
-    setMovieDetail({});
+  const addMovie = async (movie) => {
     setShowAddMovieModal(true);
+    try {
+      const data = await addMovie(movie);
+      setMovieDetail(data);
+    } catch (ex) {
+      console.log("error while adding the movie", ex);
+    }
   };
 
   const editMovie = (movie) => {
@@ -19,8 +27,16 @@ const MovieTable = ({ movieList, userType }) => {
     setShowEditMovieModal(true);
   };
 
-  const deleteMovie = (movie) => {
-    // Make an API call here
+  const deleteMovie = async (movie) => {
+    try {
+      const data = await removeMovie(movie._id);
+      console.log(data);
+
+      setMovieList(movieList.filter((m) => m._id !== movie._id));
+      toast.success("Movie Deleted successfully");
+    } catch (error) {
+      console.error("Error occurred while deleting the movie:", error);
+    }
   };
 
   const changeMovieDetails = (event) => {
