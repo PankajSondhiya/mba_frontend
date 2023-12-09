@@ -4,27 +4,90 @@ import { useState } from "react";
 import { ADMIN } from "../constants";
 import MovieModal from "./movieModal";
 
-import { removeMovie } from "../api/movie";
+import { fetchAllMovies, removeMovie } from "../api/movie";
 import { toast } from "react-toastify";
+import { AxiosInstance } from "../util/axiosInstance";
 
 const MovieTable = ({ movieList, userType, setMovieList }) => {
   const [movieDetail, setMovieDetail] = useState({});
   const [showAddMovieModal, setShowAddMovieModal] = useState(false);
   const [showEditMovieModal, setShowEditMovieModal] = useState(false);
+  const [isRequestProcessing, setIsRequestProcessing] = useState(false);
 
-  const addMovie = async (movie) => {
+  const addMovie = async (theatre) => {
     setShowAddMovieModal(true);
-    try {
-      const data = await addMovie(movie);
-      setMovieDetail(data);
-    } catch (ex) {
-      console.log("error while adding the movie", ex);
-    }
+
+    setMovieDetail({
+      name: "",
+      description: "",
+      language: [],
+      director: "",
+      posterUrl: "",
+      trailerUrl: "",
+      releaseStatus: "RELEASED",
+      releaseDate: "",
+    });
+    setShowAddMovieModal(true);
   };
 
   const editMovie = (movie) => {
     setMovieDetail(movie);
     setShowEditMovieModal(true);
+  };
+  const addOrEditMovieDetails = async (event) => {
+    event.preventDefault();
+    if (event.target.innerText.includes("Edit")) {
+      try {
+        setIsRequestProcessing(true);
+        const response = await AxiosInstance.put(
+          `/mba/api/v1/movies/${movieDetail._id}`,
+          {
+            name: movieDetail.name,
+            description: movieDetail.description,
+            director: movieDetail.director,
+            posterUrl: movieDetail.posterUrl,
+            trailerUrl: movieDetail.trailerUrl,
+            releaseStatus: movieDetail.releaseStatus,
+            releaseDate: movieDetail.releaseDate,
+          }
+        );
+        const updatedMovieList = movieList.map((m) =>
+          m._id === movieDetail._id ? movieDetail : m
+        );
+        toast.success(
+          `Movie details for ${movieDetail.name} updated successfully.`
+        );
+        // fetchMovies();
+        setMovieList(updatedMovieList);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        resetState();
+        setIsRequestProcessing(false);
+      }
+    } else {
+      try {
+        setIsRequestProcessing(true);
+        const response = await AxiosInstance.post("/mba/api/v1/movies", {
+          name: movieDetail.name,
+          description: movieDetail.description,
+          language: [movieDetail.language],
+          director: movieDetail.director,
+          posterUrl: movieDetail.posterUrl,
+          trailerUrl: movieDetail.trailerUrl,
+          releaseStatus: movieDetail.releaseStatus,
+          releaseDate: movieDetail.releaseDate,
+        });
+
+        toast.success(`New movie, ${movieDetail.name}, added successfully.`);
+        fetchAllMovies();
+      } catch (error) {
+        console.log(error);
+      } finally {
+        resetState();
+        setIsRequestProcessing(false);
+      }
+    }
   };
 
   const deleteMovie = async (movie) => {
@@ -40,25 +103,44 @@ const MovieTable = ({ movieList, userType, setMovieList }) => {
   };
 
   const changeMovieDetails = (event) => {
-    setMovieDetail({
-      ...movieDetail,
-      [event.target.name]: event.target.value,
-    });
+    if (event.target.name === "releaseDate") {
+      const selectedDate = event.target.value;
+
+      if (selectedDate) {
+        const [day, month, year] = selectedDate.split("-");
+
+        if (day && month && year) {
+          setMovieDetail({
+            ...movieDetail,
+            [event.target.name]: `${year}-${month}-${day}`,
+          });
+        }
+      }
+    } else {
+      setMovieDetail({
+        ...movieDetail,
+        [event.target.name]: event.target.value,
+      });
+    }
   };
 
   const resetState = () => {
     setShowEditMovieModal(false);
     setShowAddMovieModal(false);
-    setShowEditMovieModal(false);
-
-    setMovieDetail({});
+    setMovieDetail({
+      ...movieDetail,
+      releaseDate: "",
+    });
   };
 
   return (
     <>
       <MaterialTable
         title="Movies"
-        data={movieList}
+        data={movieList.map((movie) => ({
+          ...movie,
+          id: movie._id,
+        }))}
         columns={[
           {
             title: "Poster",
@@ -115,6 +197,8 @@ const MovieTable = ({ movieList, userType, setMovieList }) => {
         addMovie={addMovie}
         movieDetail={movieDetail}
         changeMovieDetails={changeMovieDetails}
+        addOrEditMovieDetails={addOrEditMovieDetails}
+        isRequestProcessing={isRequestProcessing}
       />
     </>
   );

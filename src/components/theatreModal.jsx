@@ -14,9 +14,13 @@ const TheatreModal = ({
   changeTheatreDetails,
   userType,
   movieList,
+  isRequestProcessing,
+  addOrRemoveScreening,
+  updateOrAddTheatreDetail,
 }) => {
   return (
     <Modal
+      style={{ backdropFilter: "blur(10px)" }}
       show={showAddTheatreModal || showEditTheatreModal}
       onHide={resetState}
       backdrop="static"
@@ -102,7 +106,10 @@ const TheatreModal = ({
                   field: "releaseStatus",
                 },
               ]}
-              data={movieList}
+              data={movieList.map((movie) => ({
+                ...movie,
+                id: movie._id,
+              }))}
               actions={[
                 (rowData) => {
                   const isMovieScreening = theatreDetail?.movies?.includes(
@@ -114,7 +121,7 @@ const TheatreModal = ({
                       ? "Remove screening"
                       : "Add screening",
                     onClick: () => {
-                      // Make API call to add or remove movie from theater
+                      addOrRemoveScreening(rowData);
                     },
                   };
                 },
@@ -129,8 +136,19 @@ const TheatreModal = ({
               </Button>
             </div>
             <div className="m-1">
-              <Button type="submit" variant="primary">
-                {showEditTheatreModal ? "Edit Theatre" : "Add Theatre"}
+              <Button
+                type="submit"
+                variant="primary"
+                onClick={updateOrAddTheatreDetail}
+                disabled={isRequestProcessing}
+              >
+                {showEditTheatreModal
+                  ? isRequestProcessing
+                    ? "Editing theatre..."
+                    : "Edit Theatre"
+                  : isRequestProcessing
+                  ? "Adding theatre..."
+                  : "Add Theatre"}
               </Button>
             </div>
           </div>
