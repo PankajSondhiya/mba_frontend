@@ -6,7 +6,7 @@ import { fetchAllUsers } from "../../api/user";
 import Navbar from "../../components/Navbar";
 import { ADMIN } from "../../constants";
 import StatsDisplay from "./statsDisplay";
-import UserModal from "./userModal";
+
 import { lazy } from "react";
 
 const TheatreTable = lazy(() => import("../../components/theatreTable"));

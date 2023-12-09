@@ -22,8 +22,6 @@ const TheatreTable = ({
   const resetState = () => {
     setShowEditTheatreModal(false);
     setShowAddTheatreModal(false);
-    setShowEditTheatreModal(false);
-
     setTheatreDetail({
       name: "",
       description: "",
@@ -39,9 +37,9 @@ const TheatreTable = ({
     setShowEditTheatreModal(true);
   };
 
-  const editTheatreInDb = () => {
-    console.log("In edit");
-  };
+  // const editTheatreInDb = () => {
+  //   console.log("In edit");
+  // };
 
   const deleteTheatre = async (theatre) => {
     const deletionId = theatre._id;
@@ -230,7 +228,6 @@ const TheatreTable = ({
         showAddTheatreModal={showAddTheatreModal}
         showEditTheatreModal={showEditTheatreModal}
         resetState={resetState}
-        editTheatre={editTheatreInDb}
         addTheatre={addTheatreInDb}
         theatreDetail={theatreDetail}
         changeTheatreDetails={changeTheatreDetails}

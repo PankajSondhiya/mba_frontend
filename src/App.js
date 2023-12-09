@@ -28,7 +28,7 @@ function App() {
       <Route element={<RequireAuth allowedRoles={[ADMIN, CLIENT, CUSTOMER]} />}>
         <Route
           path="/buytickets/:moviename/:movieId"
-          element={<MovieTheatres />}  
+          element={<MovieTheatres />}
         />
       </Route>
       <Route path="/movie/:id/details" element={<MovieDetails />} />
