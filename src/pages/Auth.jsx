@@ -9,6 +9,8 @@ import { AxiosInstance } from "../util/axiosInstance";
 const Auth = () => {
   const [showSignup, setShowSignup] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
+
   const navigate = useNavigate();
   const initialLoginFormValues = {
     userId: "",
@@ -83,6 +85,7 @@ const Auth = () => {
   const handleSignup = async (event) => {
     event.preventDefault();
     try {
+      setIsProcessing(true);
       await AxiosInstance.post("/mba/api/v1/auth/signup", {
         userId: signupFormValues.userId,
         password: signupFormValues.password,
@@ -148,8 +151,9 @@ const Auth = () => {
                     <div className="input-group m-1">
                       <input
                         type="submit"
-                        className="form-control btn btn-danger"
-                        value="Login"
+                        className="submitBtn form-control btn btn-danger"
+                        value={isProcessing ? "Logging in..." : "Login"}
+                        disabled={isProcessing}
                       />
                     </div>
                     <div
@@ -230,8 +234,9 @@ const Auth = () => {
                     <div className="input-group m-1">
                       <input
                         type="submit"
-                        className="form-control btn btn-danger"
-                        value="Sign up"
+                        className="submitBtn form-control btn btn-danger"
+                        value={isProcessing ? "Signing up..." : "Signup"}
+                        disabled={isProcessing}
                       />
                     </div>
                     <div

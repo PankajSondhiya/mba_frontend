@@ -91,6 +91,7 @@ const TheatreModal = ({
 
           {userType === CLIENT && showEditTheatreModal && (
             <MaterialTable
+              key={isRequestProcessing ? "loading" : "data"}
               title="Modify the screenings in your theatre"
               columns={[
                 {
@@ -112,9 +113,10 @@ const TheatreModal = ({
               }))}
               actions={[
                 (rowData) => {
-                  const isMovieScreening = theatreDetail?.movies?.includes(
-                    rowData._id
-                  );
+                  const isMovieScreening =
+                    theatreDetail.movies &&
+                    theatreDetail.movies.includes(rowData._id);
+
                   return {
                     icon: isMovieScreening ? Delete : Add,
                     tooltip: isMovieScreening
@@ -137,7 +139,6 @@ const TheatreModal = ({
             </div>
             <div className="m-1">
               <Button
-                type="submit"
                 variant="primary"
                 onClick={updateOrAddTheatreDetail}
                 disabled={isRequestProcessing}

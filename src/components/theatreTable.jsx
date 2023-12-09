@@ -63,10 +63,10 @@ const TheatreTable = ({
     setShowAddTheatreModal(true);
   };
 
-  const addTheatreInDb = (event) => {
-    event.preventDefault();
-    const { data } = addNewTheatre(theatreDetail);
-  };
+  // const addTheatreInDb = (event) => {
+  //   event.preventDefault();
+  //   const { data } = addNewTheatre(theatreDetail);
+  // };
 
   const changeTheatreDetails = (event) => {
     setTheatreDetail({
@@ -228,7 +228,7 @@ const TheatreTable = ({
         showAddTheatreModal={showAddTheatreModal}
         showEditTheatreModal={showEditTheatreModal}
         resetState={resetState}
-        addTheatre={addTheatreInDb}
+        addTheatre={addTheatre}
         editTheatre={editTheatre}
         theatreDetail={theatreDetail}
         changeTheatreDetails={changeTheatreDetails}

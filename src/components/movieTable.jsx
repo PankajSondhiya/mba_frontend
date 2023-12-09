@@ -80,7 +80,7 @@ const MovieTable = ({ movieList, userType, setMovieList, fetchMovies }) => {
         });
 
         toast.success(`New movie, ${movieDetail.name}, added successfully.`);
-        fetchAllMovies();
+        fetchMovies();
       } catch (error) {
         console.log(error);
       } finally {
