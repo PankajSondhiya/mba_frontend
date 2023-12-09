@@ -11,10 +11,10 @@ const Client = () => {
   const [movieList, setMovieList] = useState([]);
   const [theaterList, setTheaterList] = useState([]);
 
-  // async function fetchTheaters() {
-  //   const theatres = await fetchAllTheatres();
-  //   setTheaterList(theatres);
-  // }
+  async function fetchTheaters() {
+    const theatres = await fetchAllTheatres();
+    setTheaterList(theatres);
+  }
 
   async function fetchMovies() {
     const movies = await fetchAllMovies();
@@ -32,6 +32,7 @@ const Client = () => {
 
   useEffect(() => {
     fetchTheatresOfClient();
+    fetchTheaters();
     fetchMovies();
   }, []);
 
