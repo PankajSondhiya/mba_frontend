@@ -23,13 +23,15 @@ const Payment = ({ movie, theatre, noOfSeats, totalCost }) => {
     return data;
   }
 
-  async function initPayment(bookingId, totalCost) {
+  async function initPayment(bookingId, totalCost, noOfSeats) {
     const data = await makePayment({
       bookingId,
       amount: totalCost,
+      seats: noOfSeats,
     });
 
     setPaymentDetail(data);
+    setIsPaymentProcessing(false);
   }
 
   const bookAndPay = async () => {
@@ -39,7 +41,7 @@ const Payment = ({ movie, theatre, noOfSeats, totalCost }) => {
 
   const handleHide = () => {
     setIsOpen(false);
-    if (paymentDetail.status === "SUCCESS") {
+    if (paymentDetail.status === "CONFIRMED") {
       navigate("/");
     }
   };
@@ -86,7 +88,7 @@ const Payment = ({ movie, theatre, noOfSeats, totalCost }) => {
                 <p className="fw-bolder">₹{totalCost}</p>
               </div>
             </div>
-            {paymentDetail.status === "SUCCESS" ? (
+            {paymentDetail.status === "CONFIRMED" ? (
               <>
                 <img alt="ticket" src={GIF} />
                 <div className="bg-success py-1 text-white text-center shadow-lg rounded-3 bg-opacity-75">
@@ -107,8 +109,14 @@ const Payment = ({ movie, theatre, noOfSeats, totalCost }) => {
                 </button>
               </>
             ) : (
-              <button className="btn btn-danger" onClick={bookAndPay}>
-                Confirm payment
+              <button
+                className="btn btn-danger"
+                onClick={bookAndPay}
+                disabled={isPaymentProcessing}
+              >
+                {isPaymentProcessing
+                  ? "Processing payment..."
+                  : "Confirm payment"}
               </button>
             )}
           </div>
