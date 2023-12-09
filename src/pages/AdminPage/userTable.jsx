@@ -24,13 +24,16 @@ const UserTable = ({ userList, setUserList }) => {
   const updateUserDetail = async (event) => {
     event.preventDefault();
     try {
-      await AxiosInstance.put(`/mba/api/v1/users/${userDetail.userId}`, {
-        userId: userDetail.userId,
-        userType: userDetail.userType,
-        userStatus: userDetail.userStatus,
-        name: userDetail.name,
-        email: userDetail.email,
-      });
+      await AxiosInstance.put(
+        `/mba/api/v1/users/details/${userDetail.userId}`,
+        {
+          userId: userDetail.userId,
+          userType: userDetail.userType,
+          userStatus: userDetail.userStatus,
+          name: userDetail.name,
+          email: userDetail.email,
+        }
+      );
       toast.success("User details updated successfully");
       setUserList(
         userList.map((user) =>
