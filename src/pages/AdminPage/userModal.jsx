@@ -9,6 +9,7 @@ const UserModal = ({
 }) => {
   return (
     <Modal
+      style={{ backdropFilter: "blur(10px)" }}
       show={showUserModal}
       onHide={resetState}
       centered

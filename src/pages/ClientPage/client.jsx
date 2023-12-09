@@ -20,10 +20,23 @@ const Client = () => {
     const movies = await fetchAllMovies();
     setMovieList(movies);
   }
+  async function fetchTheatresOfClient() {
+    const theatres = await fetchAllTheatres();
+
+    const filteredTheatres = theatres.filter(
+      (theatre) => theatre.ownerId === localStorage.getItem("_id")
+    );
+
+    setTheaterList(filteredTheatres);
+  }
 
   useEffect(() => {
     fetchTheaters();
     fetchMovies();
+  }, []);
+
+  useEffect(() => {
+    fetchTheatresOfClient();
   }, []);
 
   return (
@@ -33,8 +46,10 @@ const Client = () => {
         <Suspense fallback={<div>Loading.....</div>}>
           <TheatreTable
             theaterList={theaterList}
+            setTheatreList={setTheaterList}
             userType={CLIENT}
             movieList={movieList}
+            fetchTheatresOfClient={fetchTheatresOfClient}
           />
         </Suspense>
 

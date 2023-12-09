@@ -8,7 +8,7 @@ import { fetchAllMovies, removeMovie } from "../api/movie";
 import { toast } from "react-toastify";
 import { AxiosInstance } from "../util/axiosInstance";
 
-const MovieTable = ({ movieList, userType, setMovieList }) => {
+const MovieTable = ({ movieList, userType, setMovieList, fetchMovies }) => {
   const [movieDetail, setMovieDetail] = useState({});
   const [showAddMovieModal, setShowAddMovieModal] = useState(false);
   const [showEditMovieModal, setShowEditMovieModal] = useState(false);

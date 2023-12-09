@@ -59,8 +59,10 @@ const MovieDetails = () => {
               <h5 className="font-italic">{movieDetail.releaseDate}</h5>
               <hr />
               <h4>Cast</h4>
-              {movieDetail?.casts?.map((name) => (
-                <li className="list-group-item">{name}</li>
+              {movieDetail?.casts?.map((name, index) => (
+                <li key={index + 1} className="list-group-item">
+                  {name}
+                </li>
               ))}
               <div className="text-center my-3">
                 {

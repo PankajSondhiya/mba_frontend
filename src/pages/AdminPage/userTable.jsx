@@ -10,8 +10,8 @@ const UserTable = ({ userList, setUserList }) => {
   const [userDetail, setUserDetail] = useState({});
 
   const editUser = (user) => {
-    setShowUserModal(true);
     setUserDetail(user);
+    setShowUserModal(true);
   };
 
   const changeUserDetails = (event) => {
@@ -25,6 +25,7 @@ const UserTable = ({ userList, setUserList }) => {
     event.preventDefault();
     try {
       await AxiosInstance.put(`/mba/api/v1/users/${userDetail.userId}`, {
+        userId: userDetail.userId,
         userType: userDetail.userType,
         userStatus: userDetail.userStatus,
         name: userDetail.name,
@@ -46,14 +47,23 @@ const UserTable = ({ userList, setUserList }) => {
 
   const resetState = () => {
     setShowUserModal(false);
-    setUserDetail({});
+    setUserDetail({
+      ...userDetail,
+      name: "",
+      email: "",
+      userType: "",
+      userStatus: "",
+    });
   };
 
   return (
     <>
       <MaterialTable
         title="Users"
-        data={userList}
+        data={userList.map((user) => ({
+          ...user,
+          id: user._id,
+        }))}
         columns={[
           {
             title: "User Id",

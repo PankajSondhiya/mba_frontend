@@ -20,7 +20,7 @@ const TheatreModal = ({
 }) => {
   return (
     <Modal
-      style={{ backdropFilter: "blur(10px)" }}
+      style={{ backdropFilter: "blur(8px)" }}
       show={showAddTheatreModal || showEditTheatreModal}
       onHide={resetState}
       backdrop="static"

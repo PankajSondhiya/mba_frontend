@@ -7,8 +7,15 @@ const MovieModal = ({
   editMovie,
   addMovie,
   movieDetail,
+  addOrEditMovieDetails,
   changeMovieDetails,
+  isRequestProcessing,
 }) => {
+  const formatDate = (dateString) => {
+    const [day, month, year] = dateString.split("-");
+    return `${year}-${month}-${day}`;
+  };
+
   return (
     <Modal
       style={{ backdropFilter: "blur(10px)" }}
@@ -24,7 +31,7 @@ const MovieModal = ({
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <form onSubmit={showEditMovieModal ? editMovie : addMovie}>
+        <form onSubmit={showEditMovieModal ? addOrEditMovieDetails : addMovie}>
           <div className="input-group my-2">
             <span className="input-group-text">Name</span>
             <input
@@ -123,7 +130,11 @@ const MovieModal = ({
             <input
               type="date"
               name="releaseDate"
-              value={movieDetail.releaseDate}
+              value={
+                movieDetail.releaseDate
+                  ? formatDate(movieDetail.releaseDate)
+                  : ""
+              }
               placeholder="releaseDate"
               onChange={changeMovieDetails}
               required
@@ -139,8 +150,18 @@ const MovieModal = ({
               </Button>
             </div>
             <div className="m-1">
-              <Button type="submit" variant="primary">
-                {showEditMovieModal ? "Edit Movie" : "Add Movie"}
+              <Button
+                variant="primary"
+                onClick={addOrEditMovieDetails}
+                disabled={isRequestProcessing}
+              >
+                {showEditMovieModal
+                  ? isRequestProcessing
+                    ? "Editing movie..."
+                    : "Edit Movie"
+                  : isRequestProcessing
+                  ? "Adding movie..."
+                  : "Add Movie"}
               </Button>
             </div>
           </div>
