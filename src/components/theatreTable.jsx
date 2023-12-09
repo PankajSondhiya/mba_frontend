@@ -229,6 +229,7 @@ const TheatreTable = ({
         showEditTheatreModal={showEditTheatreModal}
         resetState={resetState}
         addTheatre={addTheatreInDb}
+        editTheatre={editTheatre}
         theatreDetail={theatreDetail}
         changeTheatreDetails={changeTheatreDetails}
         userType={userType}
