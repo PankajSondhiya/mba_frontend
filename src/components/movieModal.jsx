@@ -11,6 +11,7 @@ const MovieModal = ({
 }) => {
   return (
     <Modal
+      style={{ backdropFilter: "blur(10px)" }}
       show={showAddMovieModal || showEditMovieModal}
       onHide={resetState}
       backdrop="static"

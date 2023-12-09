@@ -7,6 +7,7 @@ import GIF from "./../../assets/simpson.gif";
 
 const Payment = ({ movie, theatre, noOfSeats, totalCost }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
   const [bookingDetail, setBookingDetail] = useState({});
   const [paymentDetail, setPaymentDetail] = useState({});
   const navigate = useNavigate();
@@ -49,6 +50,7 @@ const Payment = ({ movie, theatre, noOfSeats, totalCost }) => {
         Proceed to payment
       </Button>
       <Modal
+        style={{ backdropFilter: "blur(10px)" }}
         size="sm"
         show={isOpen}
         onHide={handleHide}
