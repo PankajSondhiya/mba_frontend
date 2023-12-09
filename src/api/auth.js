@@ -17,6 +17,7 @@ export const signIn = async function (userId, password) {
   localStorage.setItem("userTypes", data.userTypes);
   localStorage.setItem("userStatus", data.userStatus);
   localStorage.setItem("token", data.accessToken);
+  localStorage.setItem("_id", data._id);
 
   return response.data;
 };
