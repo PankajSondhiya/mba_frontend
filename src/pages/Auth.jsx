@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { signIn } from "../api/auth";
 import { AxiosInstance } from "../util/axiosInstance";
+import "../pages/Auth.css";
 
 const Auth = () => {
   const [showSignup, setShowSignup] = useState(false);
@@ -118,13 +119,13 @@ const Auth = () => {
 
   return (
     <div id="loginPage">
-      <div className="bg-danger d-flex justify-content-center align-items-center vh-100">
+      <div className="login-container d-flex justify-content-center align-items-center vh-100">
         <div className="card m-5 p-5">
           <div className="row m-2">
             <div className="col">
               {!showSignup && (
                 <div>
-                  <h4 className="text-center">Login</h4>
+                  <h3 className="text-center">Login</h3>
                   <form onSubmit={handleLogin}>
                     <div className="input-group m-1">
                       <input
@@ -157,7 +158,7 @@ const Auth = () => {
                       />
                     </div>
                     <div
-                      className="signup-btn text-right text-info"
+                      className="signup-btn text-right"
                       style={{ cursor: "pointer" }}
                       onClick={toggleSignup}
                     >
@@ -171,7 +172,7 @@ const Auth = () => {
               )}
               {showSignup && (
                 <div>
-                  <h4 className="text-center">Signup</h4>
+                  <h3 className="text-center">Signup</h3>
                   <form onSubmit={handleSignup}>
                     <div className="input-group m-1">
                       <input
@@ -240,7 +241,7 @@ const Auth = () => {
                       />
                     </div>
                     <div
-                      className="signup-btn text-center text-info"
+                      className="signup-btn text-center"
                       style={{ cursor: "pointer" }}
                       onClick={toggleSignup}
                     >

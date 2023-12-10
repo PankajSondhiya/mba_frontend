@@ -8,7 +8,7 @@ import Client from "./pages/ClientPage/client";
 import Admin from "./pages/AdminPage/admin";
 import MovieDetails from "./pages/MovieDetails/movieDetails";
 import MovieTheatres from "./pages/MovieTheatres/movieTheatres";
-import "./App.css";
+// import "./App.css";
 import Booking from "./pages/Booking/booking";
 import RequireAuth from "./util/RequireAuth";
 import { ADMIN, CLIENT, CUSTOMER } from "./constants";
