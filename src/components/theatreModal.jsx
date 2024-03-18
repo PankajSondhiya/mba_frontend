@@ -47,6 +47,18 @@ const TheatreModal = ({
               className="form-control"
             />
           </div>
+          <div className="input-group mb-3">
+            <span className="input-group-text">No of seats</span>
+            <input
+              type="text"
+              name="noOfSeats"
+              value={theatreDetail.noOfSeats}
+              placeholder="enter the no of seats"
+              onChange={changeTheatreDetails}
+              required
+              className="form-control"
+            />
+          </div>
           <div className="input-group my-2">
             <span className="input-group-text">City</span>
             <select
