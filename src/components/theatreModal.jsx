@@ -50,7 +50,7 @@ const TheatreModal = ({
           <div className="input-group mb-3">
             <span className="input-group-text">No of seats</span>
             <input
-              type="text"
+              type="number"
               name="numSeats"
               value={theatreDetail.numSeats}
               placeholder="enter the no of seats"
