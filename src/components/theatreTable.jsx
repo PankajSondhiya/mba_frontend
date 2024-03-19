@@ -27,6 +27,7 @@ const TheatreTable = ({
       description: "",
       city: "",
       pinCode: "",
+      numSeats: "",
       movies: [],
       ownerId: "",
     });
@@ -127,7 +128,7 @@ const TheatreTable = ({
           city: theatreDetail.city,
           description: theatreDetail.description,
           pinCode: theatreDetail.pinCode,
-          noOfSeats: theatreDetail.numSeats,
+          numSeats: theatreDetail.numSeats,
         });
         toast.success(
           `Theatre details of ${theatreDetail.name} updated successfully.`
@@ -155,7 +156,7 @@ const TheatreTable = ({
           city: theatreDetail.city,
           pinCode: theatreDetail.pinCode,
           movies: [],
-          noOfSeats: theatreDetail.numSeats,
+          numSeats: theatreDetail.numSeats,
           ownerId: localStorage.getItem("_id"),
         });
         toast.success(
