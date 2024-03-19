@@ -52,7 +52,7 @@ const TheatreModal = ({
             <input
               type="text"
               name="noOfSeats"
-              value={theatreDetail.noOfSeats}
+              value={theatreDetail.numSeats}
               placeholder="enter the no of seats"
               onChange={changeTheatreDetails}
               required
