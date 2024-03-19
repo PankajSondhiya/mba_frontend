@@ -154,7 +154,6 @@ const Auth = () => {
                         type="submit"
                         className="submitBtn form-control btn btn-danger"
                         value="Login"
-                        disabled={isProcessing}
                       />
                     </div>
                     <div
