@@ -6,12 +6,16 @@ import { toast } from "react-toastify";
 import { signIn } from "../api/auth";
 import { AxiosInstance } from "../util/axiosInstance";
 import "../pages/Auth.css";
-
+import { useFirebase } from "../configs/firebase.config";
+import { VscEyeClosed, VscEye } from "react-icons/vsc";
 const Auth = () => {
   const [showSignup, setShowSignup] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
-
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
+  const [registeredEmail, setRegisteredEmail] = useState("");
+  const { firebaseLogin, sendVerficationEmail } = useFirebase();
   const navigate = useNavigate();
   const initialLoginFormValues = {
     userId: "",
@@ -56,8 +60,9 @@ const Auth = () => {
 
     try {
       const data = await signIn(
-        loginFormValues.userId,
-        loginFormValues.password
+        loginFormValues.email,
+        loginFormValues.password,
+        firebaseLogin
       );
 
       toast.success("Welcome to the app!");
@@ -95,9 +100,12 @@ const Auth = () => {
         userType: signupFormValues.userType,
       });
       setShowSignup(false);
+      setIsProcessing(false);
       toast.success("Signup done. Please login with your credentials!");
     } catch (ex) {
-      setErrorMessage(ex.response.data.message);
+      console.log(ex);
+      toast.error(ex?.response?.data);
+      setIsProcessing(false);
     }
   };
 
@@ -117,57 +125,116 @@ const Auth = () => {
       [event.target.name]: event.target.value,
     });
 
+  async function sendEmail(email) {
+    try {
+      await sendVerficationEmail(email);
+      localStorage.setItem("vefication_email", email);
+      toast.success("pleae check your email for password  reset ");
+    } catch (error) {
+      toast.error("email id not found ");
+    }
+  }
+
   return (
     <div id="loginPage">
       <div className="login-container d-flex justify-content-center align-items-center vh-100">
         <div className="card m-5 p-5">
           <div className="row m-2">
             <div className="col">
-              {!showSignup && (
-                <div>
-                  <h3 className="text-center">Login</h3>
-                  <form onSubmit={handleLogin}>
-                    <div className="input-group m-1">
+              {isForgotPassword ? (
+                <>
+                  <div className="d-flex flex-column justify-content-center align-items-center">
+                    <h3 className="text-center mb-3">Forgot password</h3>
+                    <div className="input-group mb-3 ">
                       <input
                         type="text"
                         className="form-control"
-                        placeholder="User Id"
-                        name="userId"
-                        value={loginFormValues.userId}
-                        onChange={handleLoginFormChange}
+                        placeholder="regitered email "
+                        value={registeredEmail}
                         required
+                        onChange={(e) => setRegisteredEmail(e.target.value)}
                       />
                     </div>
-                    <div className="input-group m-1">
-                      <input
-                        type="password"
-                        className="form-control"
-                        placeholder="Password"
-                        name="password"
-                        value={loginFormValues.password}
-                        onChange={handleLoginFormChange}
-                        required
-                      />
+                    <div className="d-flex justify-content-center align-items-center">
+                      <button
+                        className="btn btn-danger "
+                        onClick={() => sendEmail(registeredEmail)}
+                      >
+                        send verfication email
+                      </button>
                     </div>
-                    <div className="input-group m-1">
-                      <input
-                        type="submit"
-                        className="submitBtn form-control btn btn-danger"
-                        value="Login"
-                      />
-                    </div>
-                    <div
-                      className="signup-btn text-right"
-                      style={{ cursor: "pointer" }}
-                      onClick={toggleSignup}
-                    >
-                      Don't have an account? Signup
-                    </div>
-                    <div className="auth-error-msg text-danger text center">
-                      {errorMessage}
-                    </div>
-                  </form>
-                </div>
+                  </div>
+                </>
+              ) : (
+                !showSignup && (
+                  <div>
+                    <h3 className="text-center">Login</h3>
+                    <form onSubmit={handleLogin}>
+                      <div className="input-group mb-1">
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="email"
+                          name="email"
+                          value={loginFormValues.email}
+                          onChange={handleLoginFormChange}
+                          required
+                        />
+                      </div>
+                      <div className="input-group mb-1  d-flex justify-content-center align-items-center">
+                        <input
+                          type={showPassword ? "text" : "password"}
+                          className="form-control"
+                          placeholder="Password"
+                          name="password"
+                          value={loginFormValues.password}
+                          onChange={handleLoginFormChange}
+                          required
+                        />
+                        <div
+                          style={{
+                            position: "absolute",
+                            right: "7px",
+                            zIndex: "100",
+                          }}
+                          onClick={() => setShowPassword(!showPassword)}
+                        >
+                          {!showPassword ? <VscEye /> : <VscEyeClosed />}
+                        </div>
+                      </div>
+                      <div
+                        className="text-light"
+                        style={{
+                          textAlign: "right",
+                          cursor: "pointer",
+                          fontSize: "15px",
+                        }}
+                        onClick={() => setIsForgotPassword(true)}
+                      >
+                        Forgot password?
+                      </div>
+
+                      <div className="input-group m-1">
+                        <input
+                          type="submit"
+                          className="submitBtn form-control btn btn-danger"
+                          value="Login"
+                        />
+                      </div>
+                      <div
+                        className="signup-btn text-right"
+                        style={{ cursor: "pointer", color: "#E0E0E0" }}
+                        onClick={toggleSignup}
+                      >
+                        Don't have an account?{" "}
+                        <span className="text-light"> Signup</span>
+                      </div>
+                      <div className="auth-error-msg text-danger text center">
+                        {errorMessage}
+                      </div>
+                    </form>
+                  </div>
+                )
               )}
               {showSignup && (
                 <div>
@@ -206,9 +273,9 @@ const Auth = () => {
                         onChange={handleSignupFormChange}
                       />
                     </div>
-                    <div className="input-group m-1">
+                    <div className="input-group m-1 d-flex justify-content-center align-items-center">
                       <input
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         name="password"
                         className="form-control"
                         placeholder="Password"
@@ -216,6 +283,16 @@ const Auth = () => {
                         onChange={handleSignupFormChange}
                         required
                       />
+                      <div
+                        style={{
+                          position: "absolute",
+                          right: "7px",
+                          zIndex: "100",
+                        }}
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {!showPassword ? <VscEye /> : <VscEyeClosed />}
+                      </div>
                     </div>
                     <div className="input-group m-1">
                       <Form.Select
@@ -241,10 +318,11 @@ const Auth = () => {
                     </div>
                     <div
                       className="signup-btn text-center"
-                      style={{ cursor: "pointer" }}
+                      style={{ cursor: "pointer", color: "#E0E0E0" }}
                       onClick={toggleSignup}
                     >
-                      Already have an account? Log in.
+                      Already have an account?{" "}
+                      <span className="text-light"> Login</span>
                     </div>
                     <div className="auth-error-msg text-danger text center">
                       {errorMessage}

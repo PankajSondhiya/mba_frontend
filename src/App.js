@@ -13,6 +13,7 @@ import Booking from "./pages/Booking/booking";
 import RequireAuth from "./util/RequireAuth";
 import { ADMIN, CLIENT, CUSTOMER } from "./constants";
 import Unauthorized from "./components/Unauthorised";
+import Passwordreset from "./pages/PasswordresetPage";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
       <Route path="/movie/:id/details" element={<MovieDetails />} />
       <Route path="/movie/:movieId/:theatreId" element={<Booking />} />
       <Route path="/unauthorised" element={<Unauthorized />} />
+      <Route path="/resetpassword" element={<Passwordreset />} />
     </Routes>
   );
 }

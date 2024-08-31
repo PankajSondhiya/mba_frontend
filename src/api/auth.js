@@ -1,12 +1,13 @@
 import { toast } from "react-toastify";
 import { AxiosInstance } from "../util/axiosInstance";
+import { useFirebase } from "../configs/firebase.config";
 
-export const signIn = async function (userId, password) {
+export const signIn = async function (email, password, firebaseLogin) {
   const response = await AxiosInstance.post("/mba/api/v1/auth/signin", {
-    userId: userId,
+    email: email,
     password: password,
   });
-
+  await firebaseLogin(email, password);
   const data = response.data;
   if (!data.userId && data.message) {
     throw new Error("APPROVAL PENDING");
