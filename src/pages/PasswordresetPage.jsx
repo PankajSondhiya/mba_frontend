@@ -31,6 +31,7 @@ const Passwordreset = () => {
         email: localStorage.getItem("vefication_email"),
         newPassword,
       });
+      navigate("/login");
     } catch (error) {
       toast.error(error.message);
     }
