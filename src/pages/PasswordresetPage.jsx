@@ -32,6 +32,7 @@ const Passwordreset = () => {
         newPassword,
       });
       navigate("/login");
+      toast.success("password reset successfull Kinldy login to continue");
     } catch (error) {
       toast.error(error.message);
     }
